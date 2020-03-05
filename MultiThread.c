@@ -7,11 +7,11 @@
 #define col 4
 
 struct matrices{
-  int i,j;
+  int i,j,ttt;
   int matrixA[row][col];
   int matrixB[row][col];
   int matrixC[row][col];
-  pthread_t ida[row][col];
+  pthread_t ida[row*col];
 };
 
 
@@ -24,7 +24,7 @@ void *threadA(void *m)
       for (int k = 0; k < row ; k++)
         mat->matrixC[mat->i][mat->j] += mat->matrixA[mat->i][k]*mat->matrixB[k][mat->j];
 
-        printf("\n thread=%ld : row=%d : col=%d : result=%d \n",mat->ida[mat->i][mat->j],mat->i,mat->j,mat->matrixC[mat->i][mat->j] );
+        printf("\n thread=%ld : row=%d : col=%d : result=%d \n",mat->ida[mat->ttt],mat->i,mat->j,mat->matrixC[mat->i][mat->j] );
 }
 
 
@@ -47,12 +47,18 @@ int i,j;
   }
 
 //  pthread_t ida[row][col];
-
+mat.ttt=0;
 for (mat.i = 0; mat.i < row; mat.i++) {
   for (mat.j = 0; mat.j < col ; mat.j++)
   {
-      pthread_create(&mat.ida[mat.i][mat.j], NULL, threadA, (void *)&mat);
-      pthread_join(mat.ida[mat.i][mat.j],NULL);
+      pthread_create(&mat.ida[mat.ttt], NULL, threadA, (void *)&mat);
+    //  mat.ida[mat.ttt];
+  }
+}
+for (mat.i = 0; mat.i < row; mat.i++) {
+  for (mat.j = 0; mat.j < col ; mat.j++)
+  {
+    pthread_join(mat.ida[mat.ttt],NULL);
   }
 }
 

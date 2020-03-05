@@ -70,7 +70,9 @@ struct matrices mat;
   pthread_t ida,idb;
 
   pthread_create(&ida, NULL, threadA, (void *)&mat);
+  pthread_join(ida,NULL);
   pthread_create(&idb, NULL, threadB, (void*)&mat);
+  pthread_join(idb,NULL);
 
  pthread_join(ida,NULL);
  pthread_join(idb,NULL);
@@ -98,11 +100,6 @@ for ( i = 0; i < row; i++) {
   for ( j = 0; j < col; j++) {
     printf("%d    ", mat.matrixC[i][j]);
   }
-}
-
-
-while (1) {
-  /* code */
 }
 
   return 0;
