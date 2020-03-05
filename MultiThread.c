@@ -6,32 +6,25 @@
 #define row 4
 #define col 4
 
-int i,j,k;
-
 struct matrices{
+  int i,j;
   int matrixA[row][col];
   int matrixB[row][col];
   int matrixC[row][col];
+  pthread_t ida[row][col];
 };
 
 
 void *threadA(void *m)
 {
-  printf("\nTHREAD\n");
   struct matrices *mat;
   mat = (struct matrices*) m;
 
-  for (j = 0; j < row ; j++)
-  {
-      mat->matrixC[i][j] = 0;
-      for (k = 0; k < row ; k++)
-        mat->matrixC[i][j] += mat->matrixA[i][k]*mat->matrixB[k][j];
+      mat->matrixC[mat->i][mat->j] = 0;
+      for (int k = 0; k < row ; k++)
+        mat->matrixC[mat->i][mat->j] += mat->matrixA[mat->i][k]*mat->matrixB[k][mat->j];
 
-  }
-
-
-
-
+        printf("\n thread=%ld : row=%d : col=%d : result=%d \n",mat->ida[mat->i][mat->j],mat->i,mat->j,mat->matrixC[mat->i][mat->j] );
 }
 
 
@@ -39,7 +32,7 @@ int main(int argc, char const *argv[]) {
   srand(time(0));
 
 struct matrices mat;
-
+int i,j;
 
   for (i = 0; i < row; i++) {
     for (j = 0; j < col; j++) {
@@ -53,18 +46,16 @@ struct matrices mat;
     }
   }
 
-  pthread_t ida;
+//  pthread_t ida[row][col];
 
-for (int x = 0; x < col*row; x++) {
-  for (i = 0; i < row ; i++)
+for (mat.i = 0; mat.i < row; mat.i++) {
+  for (mat.j = 0; mat.j < col ; mat.j++)
   {
-      pthread_create(&ida, NULL, threadA, (void *)&mat);
+      pthread_create(&mat.ida[mat.i][mat.j], NULL, threadA, (void *)&mat);
+      pthread_join(mat.ida[mat.i][mat.j],NULL);
   }
-
 }
 
-
- pthread_join(ida,NULL);
 
 
 for (i = 0; i < row; i++) {
@@ -90,15 +81,6 @@ for (i = 0; i < row; i++) {
   for (int j = 0; j < col; j++) {
     printf("%d    ", mat.matrixC[i][j]);
   }
-}
-
-
-
-
-
-
-while (1) {
-  /* code */
 }
 
   return 0;
