@@ -14,6 +14,39 @@ struct matrices{
   pthread_t ida[row*col];
 };
 
+//////////////////////////////////////////////////////////// Printing All Matrices ////////////////////////////////////////////////////
+void printMatrices(struct matrices mat)
+{
+  int i, j;
+  for (i = 0; i < row; i++) {
+    printf("\n");
+    for (j = 0; j < col; j++) {
+      printf("%d    ", mat.matrixA[i][j]);
+    }
+  }
+
+
+  printf("\n\n\n");
+
+  for (i = 0; i < row; i++) {
+    printf("\n");
+    for (j = 0; j < col; j++) {
+      printf("%d    ", mat.matrixB[i][j]);
+    }
+  }
+
+  printf("\n\n\n");
+
+  for ( i = 0; i < row; i++) {
+    printf("\n");
+    for ( j = 0; j < col; j++) {
+      printf("%d    ", mat.matrixC[i][j]);
+    }
+  }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 void *threadA(void *m)
 {
@@ -45,47 +78,20 @@ int i,j;
       mat.matrixC[i][j]=0;
     }
   }
-
-//  pthread_t ida[row][col];
+int noOfThreads=0;
 mat.ttt=0;
 for (mat.i = 0; mat.i < row; mat.i++) {
   for (mat.j = 0; mat.j < col ; mat.j++)
   {
       pthread_create(&mat.ida[mat.ttt], NULL, threadA, (void *)&mat);
-    //  mat.ida[mat.ttt];
+      noOfThreads++;
   }
 }
+printf("%d Are No of Threads\n", noOfThreads);
 for (mat.i = 0; mat.i < row; mat.i++) {
   for (mat.j = 0; mat.j < col ; mat.j++)
   {
     pthread_join(mat.ida[mat.ttt],NULL);
-  }
-}
-
-
-
-for (i = 0; i < row; i++) {
-  printf("\n");
-  for (int j = 0; j < col; j++) {
-    printf("%d    ", mat.matrixA[i][j]);
-  }
-}
-
-printf("\n\n\n");
-
-for (i = 0; i < row; i++) {
-  printf("\n");
-  for (int j = 0; j < col; j++) {
-    printf("%d    ", mat.matrixB[i][j]);
-  }
-}
-
-printf("\n\n\n");
-
-for (i = 0; i < row; i++) {
-  printf("\n");
-  for (int j = 0; j < col; j++) {
-    printf("%d    ", mat.matrixC[i][j]);
   }
 }
 

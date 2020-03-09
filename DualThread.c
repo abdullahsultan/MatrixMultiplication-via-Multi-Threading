@@ -12,6 +12,38 @@ struct matrices{
   int matrixC[row][col];
 };
 
+//////////////////////////////////////////////////////////// Printing All Matrices ////////////////////////////////////////////////////
+void printMatrices(struct matrices mat)
+{
+  int i, j;
+  for (i = 0; i < row; i++) {
+    printf("\n");
+    for (j = 0; j < col; j++) {
+      printf("%d    ", mat.matrixA[i][j]);
+    }
+  }
+
+
+  printf("\n\n\n");
+
+  for (i = 0; i < row; i++) {
+    printf("\n");
+    for (j = 0; j < col; j++) {
+      printf("%d    ", mat.matrixB[i][j]);
+    }
+  }
+
+  printf("\n\n\n");
+
+  for ( i = 0; i < row; i++) {
+    printf("\n");
+    for ( j = 0; j < col; j++) {
+      printf("%d    ", mat.matrixC[i][j]);
+    }
+  }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 void *threadA(void *m)
 {
@@ -22,10 +54,10 @@ void *threadA(void *m)
 
         for (i = 0; i < (row/2)-1 ; i++)
         {
-            for (j = 0; j < (row/2)-1; j++)
+            for (j = 0; j < col; j++)
             {
                 mat->matrixC[i][j] = 0;
-                for (k = 0; k < (row/2)-1; k++)
+                for (k = 0; k < row; k++)
                     mat->matrixC[i][j] += mat->matrixA[i][k]*mat->matrixB[k][j];
             }
         }
@@ -43,7 +75,7 @@ void *threadB(void *m)
             for (j = row/2; j < row; j++)
             {
                 mat->matrixC[i][j] = 0;
-                for (k = row/2; k < row; k++)
+                for (k = row; k < row; k++)
                     mat->matrixC[i][j] += mat->matrixA[i][k]*mat->matrixB[k][j];
             }
         }
@@ -70,37 +102,16 @@ struct matrices mat;
   pthread_t ida,idb;
 
   pthread_create(&ida, NULL, threadA, (void *)&mat);
-  pthread_join(ida,NULL);
   pthread_create(&idb, NULL, threadB, (void*)&mat);
-  pthread_join(idb,NULL);
+
 
  pthread_join(ida,NULL);
  pthread_join(idb,NULL);
-int i, j;
-for (i = 0; i < row; i++) {
-  printf("\n");
-  for (j = 0; j < col; j++) {
-    printf("%d    ", mat.matrixA[i][j]);
-  }
-}
 
-printf("\n\n\n");
+ printMatrices(mat);
 
-for (i = 0; i < row; i++) {
-  printf("\n");
-  for (j = 0; j < col; j++) {
-    printf("%d    ", mat.matrixB[i][j]);
-  }
-}
 
-printf("\n\n\n");
 
-for ( i = 0; i < row; i++) {
-  printf("\n");
-  for ( j = 0; j < col; j++) {
-    printf("%d    ", mat.matrixC[i][j]);
-  }
-}
 
   return 0;
 }
