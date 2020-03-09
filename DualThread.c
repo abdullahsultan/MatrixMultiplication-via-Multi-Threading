@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-#define row 4
-#define col 4
+#define row 5
+#define col 5
 
 struct matrices{
   int matrixA[row][col];
@@ -41,6 +41,7 @@ void printMatrices(struct matrices mat)
       printf("%d    ", mat.matrixC[i][j]);
     }
   }
+  printf("\n\n\n");
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -51,8 +52,9 @@ void *threadA(void *m)
   mat = (struct matrices*) m;
 
     int i, j, k;
-
-        for (i = 0; i < (row/2)-1 ; i++)
+      int r=(row/2)-1;
+      printf("%d Row T1 \n", r );
+        for (i = 0; i < row/2 ; i++)
         {
             for (j = 0; j < col; j++)
             {
@@ -67,12 +69,14 @@ void *threadB(void *m)
 {
   struct matrices *mat;
   mat = (struct matrices*) m;
+  int r=row/2;
+  printf("%d Row T2 \n", r );
 
     int i, j, k;
 
         for (i = row/2; i < row; i++)
         {
-            for (j = row/2; j < row; j++)
+            for (j = col; j < col; j++)
             {
                 mat->matrixC[i][j] = 0;
                 for (k = row; k < row; k++)
@@ -109,9 +113,6 @@ struct matrices mat;
  pthread_join(idb,NULL);
 
  printMatrices(mat);
-
-
-
 
   return 0;
 }
