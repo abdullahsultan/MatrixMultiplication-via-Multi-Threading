@@ -52,8 +52,6 @@ void *threadA(void *m)
   mat = (struct matrices*) m;
 
     int i, j, k;
-      int r=(row/2)-1;
-      printf("%d Row T1 \n", r );
         for (i = 0; i < row/2 ; i++)
         {
             for (j = 0; j < col; j++)
@@ -70,17 +68,16 @@ void *threadB(void *m)
   struct matrices *mat;
   mat = (struct matrices*) m;
   int r=row/2;
-  printf("%d Row T2 \n", r );
 
     int i, j, k;
 
         for (i = row/2; i < row; i++)
         {
-            for (j = col; j < col; j++)
+            for (j = 0; j < col; j++)
             {
                 mat->matrixC[i][j] = 0;
-                for (k = row; k < row; k++)
-                    mat->matrixC[i][j] += mat->matrixA[i][k]*mat->matrixB[k][j];
+                for (k = 0; k < row; k++){
+                    mat->matrixC[i][j] += mat->matrixA[i][k]*mat->matrixB[k][j];  }
             }
         }
 }
